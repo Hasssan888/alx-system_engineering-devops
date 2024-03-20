@@ -1,83 +1,42 @@
-# 0x14. MySQL
+# MySQL
 
-# MySQL Configuration and Backup Project
+This project contains tasks for learning how to configure MySQL for production.
 
-![KkrkDHT](https://github.com/Official0mega/alx-system_engineering-devops/assets/122806822/f1fe73fa-eb81-420a-987a-caf81f65f857)
+## Tasks To Complete
 
-### This project focuses on MySQL database administration, setting up primary-replica infrastructure, and implementing a backup strategy. We will walk you through installing MySQL, configuring replication, and creating backups for disaster recovery.
++ [x] 0. Install MySQL<br/>
+  + Install MySQL on your web-01 and web-02 servers.
+  + The MySQL distribution must be 5.7.x.
+  + Make sure that task #3 of your [SSH project](../0x0B-ssh/README.md) is completed for `web-01` and `web-02`. The checker will connect to your servers to check MySQL status.
 
-## Table of Contents
++ [x] 1. Let us in!<br/>
+  + Create a MySQL user named `holberton_user` on both `web-01` and `web-02` with the host name set to `localhost` and the password `projectcorrection280hbtn`. This will allow us to access the replication status on both servers.
+  + Make sure that `holberton_user` has permission to check the primary/replica status of your databases.
 
-* Introduction
-* Concepts
-* Requirements
++ [x] 2. If only you could see what I've seen with your eyes<br/>
+  + Create a database named `tyrell_corp`.
+  + Within the `tyrell_corp` database create a table named `nexus6` and add at least one entry to it. This is needed for you to set up replication.
+  + Make sure that `holberton_user` has `SELECT` permissions on your table so that we can check that the table exists and is not empty.
 
-## Tasks
-+ [x] Task 0: Install MySQL
-+ [x] Task 1: Let us in!
-+ [x] Task 2: If only you could see what I've seen with  your eyes
-+ [x] Task 3: Quite an experience to live in fear, isn't it?
-+ [x] Task 4: Setup a Primary-Replica infrastructure using MySQL
-+ [x] Task 5: MySQL backup
++ [x] 3. Quite an experience to live in fear, isn't it?<br/>
+  + The name of the new user should be `replica_user`, with the host name set to `%`, and can have whatever password you’d like.
+  + `replica_user` must have the appropriate permissions to replicate your primary MySQL server.
+  + `holberton_user` will need SELECT privileges on the `mysql.user` table in order to check that `replica_user` was created with the correct permissions.
 
-## Usage
-## Contributing
-## License
++ [x] 4. Setup a Primary-Replica infrastructure using MySQL<br/>
+  + MySQL primary must be hosted on `web-01` - do not use the `bind-address`, just comment out this parameter
+  + MySQL replica must be hosted on `web-02`.
+  + Setup replication for the MySQL database named `tyrell_corp`.
+  + [4-mysql_configuration_primary](4-mysql_configuration_primary) should contain your MySQL primary configuration file (`my.cnf` or `mysqld.cnf`).
+  + [4-mysql_configuration_replica](4-mysql_configuration_replica) should contain your MySQL replica configuration file.
+  + Once MySQL replication is setup, add a new record in your table via MySQL on web-01 and check if the record has been replicated in MySQL web-02. If you see it, it means your replication is working!
+  + Make sure that `UFW` is allowing connections on port `3306` (default MySQL port) otherwise replication will not work.
 
-## Introduction
-* This project covers MySQL setup, replication, and backup strategies to ensure data availability, redundancy, and disaster recovery. We'll guide you through each task to meet the project requirements and learning objectives.
-
-## Concepts
-
-+ [x] Before diving into the tasks, it's essential to understand the key concepts related to MySQL and databases in general. This project focuses on the following concepts:
-+ [x] Database Administration: Managing and maintaining databases to ensure optimal performance, security, and availability.
-+ [x] Web Stack Debugging: Identifying and resolving issues in the web stack, including databases, to ensure smooth functionality.
-+ [x] MySQL 5.7 Installation: Installing MySQL version 5.7, a widely used database management system.
-+ [x] Primary-Replica Setup: Establishing a replication infrastructure with a primary MySQL server and one or more replica servers for redundancy and load distribution.
-+ [x] MySQL Backup: Creating backups of MySQL databases to prevent data loss in case of hardware failures, disasters, or other emergencies.
-
-# Requirements
-* Ensure that you meet the following requirements before proceeding with the tasks:
-    + Allowed Editors: Use vi, vim, or emacs as your text editors for scripting.
-    + Operating System: All scripts will be interpreted on Ubuntu 16.04 LTS.
-    + Script Execution: All Bash script files must be executable and pass Shellcheck without any errors.
-    + File Formatting: The first and second lines of your Bash scripts should follow specific conventions.
-    + Documentation: Maintain a README.md file at the project root to provide comprehensive information and instructions.
-
-## Tasks
-#### Task 0: Install MySQL
-* In this task, we'll install MySQL version 5.7 on both web-01 and web-02 servers. Ensure you've completed task #3 of the SSH project for these servers. Check the Task 0 README for detailed instructions.
-* #### Task 1: Let us in!
-* This task involves creating a MySQL user named holberton_user and setting up necessary permissions. Follow the instructions in the Task 1 README to complete this task.
-
-#### Task 2: If only you could see what I've seen with your eyes
-* Here, we'll set up a database with a table and an entry in the primary MySQL server for replication. Follow the steps outlined in the Task 2 README to achieve this.
-
-#### Task 3: Quite an experience to live in fear, isn't it?
-* For this task, we'll create a new user named replica_user on the primary MySQL server to facilitate replication. Check the Task 3 README for a step-by-step guide.
-
-#### Task 4: Setup a Primary-Replica infrastructure using MySQL
-* In this crucial task, we'll establish a primary-replica infrastructure using MySQL. Refer to Task 4 README for detailed instructions and configuration files
-
-#### Task 5: MySQL backup
-* For disaster recovery, we'll create a Bash script to generate MySQL backups in a compressed archive. Follow the Task 5 README for a comprehensive guide and example usage.
-
-# Usage
-### To use and apply the scripts and configurations provided in this project, follow these general steps:
-#### Clone this repository:
-* git clone https://github.com/Official0mega/alx-system_engineering_devops.git
-
-    + cd 0x14-mysql
-
-* Navigate to the specific task directory (e.g., 0x14-mysql/Task1).
-* Follow the instructions in the respective README file for each task to execute the scripts and configure MySQL accordingly.
-
-## Contributing
-#### We welcome contributions! If you'd like to contribute to this project, please follow these steps:
-* Fork the repository.
-* Create a new branch for your feature or enhancement.
-* Make your changes and submit a pull request.
-* We'll review your changes and merge them if everything looks good.
-
-## License
-* This project is licensed under the MIT License. Feel free to use, modify, and distribute the code as per the terms of this license.
++ [x] 5. MySQL backup<br/>_**[5-mysql_backup](5-mysql_backup)**_ contains a Bash script that generates a MySQL dump and creates a compressed archive out of it.
+  + Requirements:
+    + The MySQL dump must contain all your MySQL databases.
+    + The MySQL dump must be named `backup.sql`.
+    + The MySQL dump file has to be compressed to a `tar.gz` archive.
+    + This archive must have the following name format: `day-month-year.tar.gz.`
+    + The user to connect to the MySQL database must be `root`.
+    + The Bash script accepts one argument that is the password used to connect to the MySQL database.
